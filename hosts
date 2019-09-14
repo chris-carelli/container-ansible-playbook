@@ -1,0 +1,37 @@
+[all]
+centos1  ansible_host=10.15.155.94
+ubuntu1  ansible_host=10.15.155.93
+#ubuntu1   ansible_ssh_private_key_file=~/.ssh/id_rsa
+#cenlab94  ansible_host=10.15.155.94
+#ubulab93  ansible_host=10.15.155.93
+[all215]
+ arista-1_11 ansible_host=192.168.215.11
+ arista-1_12 ansible_host=192.168.215.12
+ aristaleaf-1_21 ansible_host=192.168.215.21
+ aristaleaf-2_22 ansible_host=192.168.215.22
+ f5-1_13 ansible_host=192.168.215.13
+ f5-2_14 ansible_host=192.168.215.14
+ c9000-1_15 ansible_host=192.168.215.15
+ c9000-2_16 ansible_host=192.168.215.16
+ c1000-4_20 ansible_host=192.168.215.20
+
+[arista215]
+ arista-1_11 ansible_host=192.168.215.11
+ arista-1_12 ansible_host=192.168.215.12
+ aristaleaf-1_21 ansible_host=192.168.215.21
+ aristaleaf-2_22 ansible_host=192.168.215.22
+[arista215:vars]
+ ansible_connection=network_cli
+ ansible_network_os=eos
+ ansible_user=admin
+ ansible_ssh_pass=!dev0ps
+ ansible_become=yes
+ ansible_become_method=enable
+
+[arileaf]
+ aristaleaf-1_21 ansible_host=192.168.215.21
+ aristaleaf-2_22 ansible_host=192.168.215.22
+
+[arispine]
+ arista-1_11 ansible_host=192.168.215.11
+ arista-1_12 ansible_host=192.168.215.12
