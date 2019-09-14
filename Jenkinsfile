@@ -4,7 +4,7 @@ pipeline {
         stage('ping dev') {
             steps {
                 echo 'running ping tests'
-                sh 'ansible -i hosts -m ping'
+                sh 'ansible -m ping arista215'
             }
         }
         stage('Build to dev') {
