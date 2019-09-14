@@ -22,8 +22,10 @@ pipeline {
             branch 'master'
         }
         steps {
+            input 'Did the arista config go in?'
+            milestone(1)
             echo 'running F5 build'
-            sh 'ansible-playbook -i hostsf5 /etc/ansible/f5_script_to_activate.yml
+            sh 'ansible-playbook -i hostsf5 /etc/ansible/f5_script_to_activate.yml'
         }
     }
 }
