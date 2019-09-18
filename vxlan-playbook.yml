@@ -1,0 +1,24 @@
+# Playbook that configures vxlan
+---
+
+  - hosts: eos
+    gather_facts: no
+
+    tasks:
+      
+    - name: Create configuration files
+      template:
+        src: "templates/{{ ansible_network_os }}-vxlan.j2"
+        dest: "configs/{{ inventory_hostname }}-vxlan.config"
+      tags: 
+        - template
+
+    - name: Load configuration file
+      eos_config:
+        backup: yes
+        src: "configs/{{ inventory_hostname }}-vxlan.config"
+        defaults: true
+        save_when: modified
+      register: "{{ inventory_hostname }}"
+      tags:
+        - configpush
