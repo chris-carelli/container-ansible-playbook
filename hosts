@@ -35,3 +35,24 @@ ubuntu1  ansible_host=10.15.155.93
 [arispine]
  arista-1_11 ansible_host=192.168.215.11
  arista-1_12 ansible_host=192.168.215.12
+ 
+[eos_spines]
+ spine01 ansible_host: 192.168.215.11
+ spine02 ansible_host: 192.168.215.12
+
+[eos_leafs]
+ leaf01 ansible_host: 192.168.215.21
+ leaf02 ansible_host: 192.168.215.22
+
+[eos:vars]
+ ansible_connection: httpapi
+ ansible_network_os: eos
+ ansible_user: admin
+ ansible_ssh_pass: !dev0ps
+ ansible_become: yes
+ ansible_become_method: enable
+
+[eos:children]
+ eos_spines
+ eos_leafs
+
