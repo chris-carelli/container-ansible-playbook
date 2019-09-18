@@ -1,3 +1,12 @@
+[all]
+ f5-1_13 ansible_host=192.168.215.13 ansible_user=root ansible_ssh_pass=!dev0ps
+ [all:vars]
+   vars:
+   provider:
+     password: !dev0ps
+     user: root
+     validate_certs: no
+     server_port: 443
 [f5215]
 f5-1_13 ansible_host=192.168.215.13 ansible_user=root ansible_ssh_pass=!dev0ps
 # f5-2_14 ansible_host=192.168.215.14 ansible_user=root ansible_ssh_pass=!dev0ps
