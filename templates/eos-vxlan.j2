@@ -1,0 +1,106 @@
+ip routing
+!
+lldp run
+!
+{% if vlans is defined -%}
+{% for vlan in vlans -%}
+vlan {{ vlan.number }}
+   name {{ vlan.name }}
+{% if vlan.options is defined %}
+{% for option in vlan.options %}
+   {{ option }}
+{% endfor -%}
+{% endif -%}
+!
+{% endfor -%}
+{% endif -%}
+{% for interface in interfaces -%}
+interface {{ interface.name }}
+   description {{ interface.description }}
+{% if interface.switchport is defined and interface.switchport == false %}
+   no switchport
+{% elif interface.switchport is defined and interface.switchport == 'trunk' %}
+   switchport mode trunk
+{% if interface.trunkoptions is defined %}
+{% for option in interface.trunkoptions  %}
+   switchport trunk {{ option }}
+{% endfor -%}
+{% endif -%}
+{% endif -%}
+{% if interface.ipv4 is defined %}
+   ip address {{ interface.ipv4 }}
+{% elif "Vxlan" not in interface.name %}
+   no ip address
+{% endif -%}
+{% if interface.shutdown == false %}
+   no shutdown
+{% elif interface.shutdown == true %}
+   shutdown
+{% endif -%}
+{% if interface.channelgroup is defined %}
+   channel-group {{ interface.channelgroup }}
+{% endif -%}
+{% if interface.varpaddr is defined %}
+   ip virtual-router address {{ interface.varpaddr }}
+{% endif -%}
+{% if interface.vnisource is defined %}
+   vxlan source-interface {{ interface.vnisource }}
+{% endif -%}
+{% if interface.vxlanvlan is defined %}
+{% for vxvlan in interface.vxlanvlan %}
+   vxlan vlan {{ vxvlan.vlan }} vni {{ vxvlan.vni }}
+{% if vxvlan.flood is defined %}
+{% for vtep in vxvlan.flood %}
+   vxlan vlan {{ vxvlan.vlan }} flood vtep {{ vtep }}
+{% endfor -%}
+{% endif -%}
+{% endfor -%}
+{% endif -%}
+!
+{% endfor -%}
+{% if varpmac is defined %}
+ip virtual-router mac-address {{ varpmac }}
+!
+{% endif -%}
+{% if mlag is defined %}
+mlag configuration
+   domain-id {{ mlag.domainid }}
+   local-interface {{ mlag.localinterface }}
+   peer-address {{ mlag.peeraddress }}
+   peer-link {{ mlag.peerlink }}
+   reload-delay {{ mlag.reloaddelay }}
+!
+{% endif -%}
+{% if prefixlists is defined %}
+{% for pl in prefixlists %}
+ip prefix-list {{ pl.name }} seq {{ pl.seq }} {{ pl.action }} {{ pl.ipv4 }} eq {{ pl.eq }}
+{% endfor -%}
+!
+{% endif -%}
+router bgp {{ bgp.asn }}
+   router-id {{ bgp.routerid }}
+   maximum-paths {{ bgp.maxpaths }}
+   distance bgp {{ bgp.distance }}
+{% if bgp.redistribute is defined %}
+   redistribute {{ bgp.redistribute }}
+{% endif -%}
+{% for neighbor in bgp.neighbors %}
+   neighbor {{ neighbor.ipv4 }} remote-as {{ neighbor.remoteas }}
+{% if neighbor.maxroutes is defined %}
+   neighbor {{ neighbor.ipv4 }} maximum-routes {{ neighbor.maxroutes }}
+{% endif -%}
+{% if neighbor.prefixlist is defined %}
+{% for list in neighbor.prefixlist %}
+   address-family ipv4
+      neighbor {{ neighbor.ipv4 }} prefix-list {{ list.name }} {{ list.direction }}
+{% endfor -%}
+{% endif -%}
+{% if neighbor.nexthop is defined %}
+   neighbor {{ neighbor.ipv4 }} next-hop-{{ neighbor.nexthop }}
+{% endif -%}
+{% endfor -%}
+{% for network in bgp.networks %}
+   network {{ network }}
+{% endfor -%}
+!
+end
