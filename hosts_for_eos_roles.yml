@@ -12,7 +12,7 @@ all:
 
   children:
 
-    eos_spines:
+    aristaspines215:
       hosts:
         arista-1_11:
           ansible_host: 192.168.215.11
@@ -22,7 +22,7 @@ all:
           ansible_host: 192.168.215.12
           mgmtip: 192.168.215.12/24
 
-    eos_leafs:
+    aristaleafs215:
       hosts:
         aristaleaf-1_21:
           ansible_host: 192.168.215.21
