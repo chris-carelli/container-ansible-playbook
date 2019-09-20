@@ -13,7 +13,7 @@ pipeline {
             }    
             steps {
                 echo 'running build automation'
-                sh 'ansible-playbook -i hosts vxlan-playbook.yml -l arista215'
+                sh 'ansible-playbook -i /etc/ansible/hosts vxlan-playbook.yml -l arista215'
               }
            }
          stage('deploy to F5s') {
@@ -24,7 +24,7 @@ pipeline {
                  input 'Did the arista config go in?'
                  milestone(1)
                  echo 'running F5 build'
-                 sh 'ansible-playbook -i hosts /etc/ansible/f5_script_node.yml'
+                 sh 'ansible-playbook -i /etc/ansible/hosts /etc/ansible/f5_script_node.yml'
              }
          }
      }
