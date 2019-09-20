@@ -1,49 +1,40 @@
-# inventory file for VXLAN lab
+[arista215]
+ arista-1_11 ansible_host=192.168.215.11
+ arista-1_12 ansible_host=192.168.215.12
+ aristaleaf-1_21 ansible_host=192.168.215.21
+ aristaleaf-2_22 ansible_host=192.168.215.22
+[arista215:vars]
+ ansible_connection=network_cli
+ ansible_network_os=eos
+ ansible_user=admin
+ ansible_ssh_pass=!dev0ps
+ ansible_become=yes
+ ansible_become_method=enable
 
----
+[arileaf]
+ aristaleaf-1_21 ansible_host=192.168.215.21
+ aristaleaf-2_22 ansible_host=192.168.215.22
 
-all:
-  vars:
-        ansible_connection: httpapi
-        ansible_network_os: eos
-        ansible_user: admin
-        ansible_ssh_pass: '!dev0ps'
-        ansible_become: yes
-        ansible_become_method: enable
-    ansible_python_interpreter: /usr/bin/env python3 
-  
-  children:
+[arispine]
+ arista-1_11 ansible_host=192.168.215.11
+ arista-1_12 ansible_host=192.168.215.12
+ 
+[eos_spines]
+ spine01 ansible_host: 192.168.215.11
+ spine02 ansible_host: 192.168.215.12
 
-    eos_spines:
-      hosts:
-        spine01:
-          ansible_host: 192.168.215.11
-          mgmtip: 192.168.215.11/24
-        spine02:
-          ansible_host: 192.168.215.12
-          mgmtip: 192.168.215.12/24
+[eos_leafs]
+ leaf01 ansible_host: 192.168.215.21
+ leaf02 ansible_host: 192.168.215.22
 
-    eos_leafs:
-      hosts:
-        leaf01: 
-          ansible_host: 192.168.215.21
-          mgmtip: 192.168.215.21/24
-        leaf02:
-          ansible_host: 192.168.215.22
-          mgmtip: 192.168.215.22/24
+[eos:vars]
+ ansible_connection: httpapi
+ ansible_network_os: eos
+ ansible_user: admin
+ ansible_ssh_pass: !dev0ps
+ ansible_become: yes
+ ansible_become_method: enable
 
-    
-    eos:
-      vars:
-        ansible_connection: httpapi
-        ansible_network_os: eos
-        ansible_user: admin
-        ansible_ssh_pass: '!dev0ps'
-        ansible_become: yes
-        ansible_become_method: enable
-      children:
-        eos_spines:
-        eos_leafs:
-
-
-
+[eos:children]
+ eos_spines
+ eos_leafs
