@@ -1,0 +1,24 @@
+---
+
+prefixlists:
+  - name: to-spines
+    seq: 10
+    action: permit
+    ipv4: 192.168.0.0/23
+    eq: 32
+  - name: to-spines
+    seq: 20
+    action: permit
+    ipv4: 172.16.0.0/23
+    eq: 30
+  - name: to-spines
+    seq: 30
+    action: permit
+    ipv4: 10.12.12.0/30
+    eq: 30
+  # Start Overlay
+  - name: to-spines
+    seq: 40
+    action: permit
+    ipv4: 10.12.34.0/24
+    eq: 32
