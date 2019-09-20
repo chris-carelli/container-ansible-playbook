@@ -1,5 +1,4 @@
 ---
-
 - name: importing task-specific data
   include_vars:
     file: "{{ inventory_hostname }}.yml
