@@ -1,0 +1,44 @@
+---
+
+interfaces:
+  - name: Loopback0
+    description: router-id
+    ipv4: 192.168.0.2/32
+    shutdown: False
+  - name: Ethernet5
+    description: P2P Link to Leaf-1
+    ipv4: 172.17.0.0/31
+    shutdown: False
+    switchport: False
+  - name: Ethernet6
+    description: P2P Link to Leaf-2
+    ipv4: 172.17.0.2/31
+    shutdown: False
+    switchport: False
+  - name: Ethernet3
+    description: P2P Link to f5-1
+    ipv4: 172.17.0.4/31
+    shutdown: False
+    switchport: False
+  - name: Ethernet4
+    description: P2P Link to f5-2
+    ipv4: 172.17.0.6/31
+    shutdown: False
+    switchport: False
+
+bgp:
+  asn: 65000
+  routerid: 192.168.0.2
+  distance: 20 200 200
+  maxpaths: 2 ecmp 64
+  networks: 
+    - 192.168.0.2/32
+  neighbors:
+    - ipv4: 172.17.0.1
+      remoteas: 65001
+      maxroutes: 12000
+    - ipv4: 172.17.0.3
+      remoteas: 65001
+      maxroutes: 12000
+
+© 2019 GitHub, Inc.
