@@ -13,7 +13,7 @@ pipeline {
             }    
             steps {
                 echo 'running build automation'
-                sh 'ansible-playbook -i hosts vxlan-playbook.yml'
+                sh 'ansible-playbook -i hosts vxlan-playbook.yml -l arista215'
               }
            }
          stage('deploy to F5s') {
