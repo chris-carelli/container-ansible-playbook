@@ -18,7 +18,7 @@ all:
           ansible_host: 192.168.215.11
           mgmtip: 192.168.215.11/24
 
-       arista-2_12:
+        arista-2_12:
           ansible_host: 192.168.215.12
           mgmtip: 192.168.215.12/24
 
