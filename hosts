@@ -1,3 +1,20 @@
+[all]
+centos1  ansible_host=10.15.155.94
+ubuntu1  ansible_host=10.15.155.93
+#ubuntu1   ansible_ssh_private_key_file=~/.ssh/id_rsa
+#cenlab94  ansible_host=10.15.155.94
+#ubulab93  ansible_host=10.15.155.93
+[all215]
+ arista-1_11 ansible_host=192.168.215.11
+ arista-1_12 ansible_host=192.168.215.12
+ aristaleaf-1_21 ansible_host=192.168.215.21
+ aristaleaf-2_22 ansible_host=192.168.215.22
+ f5-1_13 ansible_host=192.168.215.13
+ f5-2_14 ansible_host=192.168.215.14
+ c9000-1_15 ansible_host=192.168.215.15
+ c9000-2_16 ansible_host=192.168.215.16
+ c1000-4_20 ansible_host=192.168.215.20
+
 [arista215]
  arista-1_11 ansible_host=192.168.215.11
  arista-1_12 ansible_host=192.168.215.12
@@ -14,27 +31,84 @@
 [arileaf]
  aristaleaf-1_21 ansible_host=192.168.215.21
  aristaleaf-2_22 ansible_host=192.168.215.22
+[arileaf:vars]
+ ansible_connection=network_cli
+ ansible_network_os=eos
+ ansible_user=admin
+ ansible_ssh_pass=!dev0ps
+ ansible_become=yes
+ ansible_become_method=enable
+
+[arileaf1]
+ aristaleaf-1_21 ansible_host=192.168.215.21
+[arileaf:vars]
+ ansible_connection=network_cli
+ ansible_network_os=eos
+ ansible_user=admin
+ ansible_ssh_pass=!dev0ps
+ ansible_become=yes
+ ansible_become_method=enable
+
+[arileaf2]
+ aristaleaf-2_22 ansible_host=192.168.215.22
+[arileaf:vars]
+ ansible_connection=network_cli
+ ansible_network_os=eos
+ ansible_user=admin
+ ansible_ssh_pass=!dev0ps
+ ansible_become=yes
+ ansible_become_method=enable
+
 
 [arispine]
  arista-1_11 ansible_host=192.168.215.11
  arista-1_12 ansible_host=192.168.215.12
- 
-[eos_spines]
- spine01 ansible_host: 192.168.215.11
- spine02 ansible_host: 192.168.215.12
+[arispine:vars]
+ ansible_connection=network_cli
+ ansible_network_os=eos
+ ansible_user=admin
+ ansible_ssh_pass=!dev0ps
+ ansible_become=yes
+ ansible_become_method=enable
 
-[eos_leafs]
- leaf01 ansible_host: 192.168.215.21
- leaf02 ansible_host: 192.168.215.22
 
-[eos:vars]
- ansible_connection: httpapi
- ansible_network_os: eos
- ansible_user: admin
- ansible_ssh_pass: !dev0ps
- ansible_become: yes
- ansible_become_method: enable
+[arispine1]
+ arista-1_11 ansible_host=192.168.215.11
+[arispine1:vars]
+ ansible_connection=network_cli
+ ansible_network_os=eos
+ ansible_user=admin
+ ansible_ssh_pass=!dev0ps
+ ansible_become=yes
+ ansible_become_method=enable
 
-[eos:children]
- eos_spines
- eos_leafs
+
+[arispine2]
+ arista-1_12 ansible_host=192.168.215.12
+[arispine2:vars]
+ ansible_connection=network_cli
+ ansible_network_os=eos
+ ansible_user=admin
+ ansible_ssh_pass=!dev0ps
+ ansible_become=yes
+ ansible_become_method=enable
+[f5215]
+f5-1_13 ansible_host=192.168.215.13 ansible_user=root ansible_ssh_pass=!dev0ps
+# f5-2_14 ansible_host=192.168.215.14 ansible_user=root ansible_ssh_pass=!dev0ps
+
+[f5215:vars]
+ vars:
+   provider:
+     password: !dev0ps
+     user: root
+     validate_certs: no
+     server_port: 443
+
+[cisco215]
+ c9000-1_15 ansible_host=192.168.215.15 connection: network_cli become: yes ansible_become_method: enable ansible_user: devops ansible_become_password:!dev0ps ansible_network_os: ios
+ c9000-2_16 ansible_host=192.168.215.16 connection: network_cli become: yes ansible_become_method: enable ansible_user: devops ansible_become_password:!dev0ps ansible_network_os: ios
+ c1000-4_20 ansible_host=192.168.215.20 connection: network_cli become: yes ansible_become_method: enable ansible_user: devops ansible_become_password:!dev0ps ansible_network_os: ios
+ c1000-3_19 ansible_host=192.168.215.19 connection: network_cli become: yes ansible_become_method: enable ansible_user: devops ansible_become_password:!dev0ps ansible_network_os: ios
+ c1000-2_18 ansible_host=192.168.215.18 connection: network_cli become: yes ansible_become_method: enable ansible_user: devops ansible_become_password:!dev0ps ansible_network_os: ios
+ c1000-1_17 ansible_host=192.168.215.17 connection: network_cli become: yes ansible_become_method: enable ansible_user: devops ansible_become_password:!dev0ps ansible_network_os: ios
+                                                                              
