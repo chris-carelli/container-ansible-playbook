@@ -13,7 +13,7 @@ pipeline {
             }    
             steps {
                 echo 'running build automation'
-                sh 'ansible-playbook -i /etc/ansible/hosts_for_eos_roles /etc/ansible/aristasite215.yml'
+                sh 'ansible-playbook -i /etc/ansible/hosts_for_eos_roles.yml /etc/ansible/aristasite215.yml'
               }
            }
          stage('deploy to F5s') {
