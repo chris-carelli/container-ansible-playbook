@@ -1,5 +1,5 @@
 ---
-- hosts: arista
+- hosts: arista215
   tags: arista_part
   connection: network_cli
   roles:
