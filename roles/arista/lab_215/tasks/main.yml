@@ -1,0 +1,12 @@
+---
+- name: importing task-specific data
+  include_vars:
+    file: "{{ inventory_hostname }}.yml
+    
+- name: configuring interfaces
+  include_tasks: configure_interfaces.yml
+  
+- name: configuring bgp
+  include_tasks: configure_bgp.yml
+  
+---  

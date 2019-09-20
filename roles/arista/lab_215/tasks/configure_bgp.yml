@@ -1,0 +1,17 @@
+---
+- name: CREATING TEMPORARY CONFIG FILE // ROUTING
+  template:
+    src: bgp.j2
+    dest: /tmp/{{ inventory_hostname }}_bgp.conf
+
+- name: APPLYING CONFIGURATION TO DEVICE // ROUTING
+  eos_config:
+    match: none
+    src: /tmp/{{ inventory_hostname }}_bgp.conf
+    save_when: modified
+
+- name: DELETING TEMPORARY CONFIG FILE // ROUTING
+  file:
+    path: /tmp/{{ inventory_hostname }}_bgp.conf
+    state: absent
+...

@@ -1,0 +1,23 @@
+ip routing
+ip routing vrf mgmt
+!
+{% for int in node_var.interfaces %}
+interface {{ int.port }}
+{% if int.state %}    no shutdown {% endif %}
+
+{% if "loopback" not in int.port %}    no switchport {% endif %}
+
+exit
+!
+interface {{ int.port }}{% if int.vlan != 0 %}.{{ int.vlan }} {% endif %}
+
+{% if int.vlan != 0 %}    encapsulation dot1q vlan {{ int.vlan }} {% endif %}
+
+    ip address {{ int.ipv4 }}
+    ipv6 address {{ int.ipv6_ula }}
+    logging event link-status
+{% if int.state %}    no shutdown {% endif %}
+
+exit
+!
+{% endfor %}

@@ -1,0 +1,17 @@
+---
+- name: CREATING TEMPORARY CONFIG FILE // INTERFACES
+  template:
+    src: iface.j2
+    dest: /tmp/{{ inventory_hostname }}_iface.conf
+
+- name: APPLYING CONFIGURATION TO DEVICE // INTERFACES
+  eos_config:
+    match: none
+    src: /tmp/{{ inventory_hostname }}_iface.conf
+    save_when: modified
+
+- name: DELETING TEMPORARY CONFIG FILE // INTERFACES
+  file:
+    path: /tmp/{{ inventory_hostname }}_iface.conf
+    state: absent
+...

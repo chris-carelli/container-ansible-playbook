@@ -1,0 +1,48 @@
+service routing protocols model multi-agent
+!
+{% if node_var.routing.bgp.configured %}
+router bgp {{ node_var.routing.bgp.asn }}
+    router-id {{ node_var.routing.bgp.router_id }}
+{% if node_var.routing.bgp.as_path_relax %}
+    bgp bestpath as-path multipath-relax
+{% endif %}
+    !
+{% for nei in node_var.routing.bgp.neighbors %}
+    neighbor {{ nei.peer_ip }} remote-as {{ nei.peer_asn }}
+    neighbor {{ nei.peer_ip }} timers 5 15
+    neighbor {{ nei.peer_ip }} password {{ nei.password }}
+{% if nei.ebgp_multihop != "not_defined" %}
+    neighbor {{ nei.peer_ip }} ebgp-multihop {{ nei.ebgp_multihop }}
+{% endif %}
+{% if nei.update_source != "not_defined" %}
+    neighbor {{ nei.peer_ip }} update-source {{ nei.update_source }}
+{% endif %}
+{% if nei.ipv4 %}
+    !
+    address-family ipv4
+        neighbor {{ nei.peer_ip }} activate
+    !
+{% else %}
+    !
+    address-family ipv4
+        no neighbor {{ nei.peer_ip }} activate
+    !
+{% endif %}
+{% if nei.evpn %}
+    neighbor {{ nei.peer_ip }} send-community extended
+    !
+    address-family evpn
+        neighbor {{ nei.peer_ip }} activate
+    !
+{% else %}
+    !
+    address-family evpn
+        no neighbor {{ nei.peer_ip }} activate
+    !
+{% endif %}
+{% endfor %}
+    address-family ipv4
+        network {{ node_var.interfaces[0].ipv4 }}
+    !
+exit
+{% endif %}

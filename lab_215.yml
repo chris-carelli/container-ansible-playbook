@@ -1,0 +1,7 @@
+---
+- hosts: arista
+  tags: arista_part
+  connection: network_cli
+  roles:
+    - { role: arista/lab_215 }
+...

@@ -1,0 +1,119 @@
+--- 
+ 
+ 
+ interfaces: 
+   - name: Loopback0 
+     description: router-id 
+     ipv4: 192.168.1.2/32 
+     shutdown: False 
+   - name: Ethernet1 
+     description: P2P Link to Spine01 
+     ipv4: 172.16.0.3/31 
+     shutdown: False 
+     switchport: False 
+   - name: Ethernet2 
+     description: P2P Link to Spine02 
+     ipv4: 172.17.0.3/31 
+     shutdown: False 
+     switchport: False 
+   - name: Ethernet10 
+     description: mlag Link to Leaf01 
+     channelgroup: 12 mode active 
+     shutdown: False 
+   - name: Ethernet11 
+     description: mlag Link to Leaf01 
+     channelgroup: 12 mode active 
+     shutdown: False 
+   - name: Port-Channel12 
+     description: mlag to peer Leaf01 
+     shutdown: False 
+     switchport: trunk 
+     trunkoptions: 
+       - group mlagpeer 
+   - name: Vlan4094 
+     description: mlag 
+     ipv4: 10.12.12.2/30 
+     shutdown: False 
+   - name: Vlan100 
+     description: operations 
+     ipv4: 10.100.100.2/24 
+     shutdown: False 
+     varpaddr:  10.100.100.254 
+   - name: Vlan200 
+     description: staff 
+     ipv4: 10.200.200.2/24 
+     shutdown: False 
+     varpaddr:  10.200.200.254 
+   # Start Overlay 
+   - name: Loopback1 
+     description: vni-source 
+     ipv4: 10.12.34.1/32 
+     shutdown: False 
+   - name: Vxlan1 
+     description: vti 
+     shutdown: False 
+     vnisource: Loopback1 
+     vxlanvlan: 
+       - vlan: 100 
+         vni: 100 
+         flood:  
+           - 10.12.34.3 
+             10.12.34.4 
+       - vlan: 200 
+         vni: 200 
+         flood:  
+           - 10.12.34.3 
+             10.12.34.4 
+ 
+ 
+ varpmac: aa:00:bb:11:cc:22 
+ 
+
+vlans: 
+   - name: mlag 
+     number: 4094 
+     options: 
+       - trunk group mlagpeer 
+   - name: operations 
+     number: 100 
+   - name: staff 
+     number: 200 
+ 
+
+ mlag: 
+   domainid: leaf12 
+   localinterface: Vlan4094 
+   peeraddress: 10.12.12.1 
+   peerlink: Port-Channel12 
+   reloaddelay: 500 
+ 
+
+ bgp: 
+   asn: 65001 
+   routerid: 192.168.1.2 
+   distance: 20 200 200 
+   maxpaths: 2 ecmp 2 
+   networks:  
+     - 192.168.1.2/32 
+     # Start Overlay 
+     - 10.12.34.1/32 
+   redistribute: connected 
+   neighbors: 
+     - ipv4: 172.16.0.5 
+       remoteas: 65000 
+       maxroutes: 12000 
+       prefixlist: 
+         - name: to-spines 
+           type: prefixlist 
+           direction: out 
+     - ipv4: 172.17.0.5 
+       remoteas: 65000 
+       maxroutes: 12000 
+       prefixlist: 
+         - name: to-spines 
+           type: prefixlist 
+           direction: out 
+     - ipv4: 10.12.12.1 
+       remoteas: 65001 
+       nexthop: self 
+       maxroutes: 12000 
