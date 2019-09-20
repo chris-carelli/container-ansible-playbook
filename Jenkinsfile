@@ -13,7 +13,7 @@ pipeline {
             }    
             steps {
                 echo 'running build automation'
-                sh 'ansible-playbook -i /etc/ansible/hosts.yml lab_215.yml'
+                sh 'ansible-playbook -i /etc/ansible/hosts.yml /etc/ansible/site.yml'
               }
            }
          stage('deploy to F5s') {
