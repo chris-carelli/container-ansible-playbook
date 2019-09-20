@@ -13,7 +13,7 @@ pipeline {
             }    
             steps {
                 echo 'running build automation'
-                sh 'ansible-playbook -i /etc/ansible/hosts.yml /etc/ansible/site.yml'
+                sh 'ansible-playbook -i /etc/ansible/hosts.yml /etc/ansible/aristasite215.yml'
               }
            }
          stage('deploy to F5s') {
